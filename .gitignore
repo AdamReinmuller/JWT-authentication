@@ -1,2 +1,9 @@
 server/ormconfig.json
 server/yarn.lock
+ormconfig.json
+.idea/
+.vscode/
+node_modules/
+build/
+tmp/
+temp/
