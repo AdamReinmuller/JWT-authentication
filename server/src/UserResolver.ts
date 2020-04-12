@@ -1,9 +1,11 @@
 import { Resolver, Query, Mutation, Arg, ObjectType, Field, Ctx, UseMiddleware } from 'type-graphql';
 import { hash, compare } from 'bcryptjs';
+
 import { User } from './entity/User';
 import { MyContext } from './MyContext';
 import { createRefreshToken, createAccessToken } from './authentication/tokens';
 import { isAuth } from './authentication/isAuth';
+import { sendRefreshToken } from './authentication/sendRefreshToken';
 
 @ObjectType()
 class LoginResponse {
@@ -16,6 +18,7 @@ export class UserResolver {
   @Query(() => String)
   @UseMiddleware(isAuth)
   amILoggedIn(@Ctx() { payload }: MyContext) {
+    console.log('payload: ', payload);
     return `your user id is ${payload!.userId}`;
   }
 
@@ -59,7 +62,7 @@ export class UserResolver {
 
     // Successful login
 
-    res.cookie('jid', createRefreshToken(user));
+    sendRefreshToken(res, createRefreshToken(user));
 
     return {
       accessToken: createAccessToken(user),
