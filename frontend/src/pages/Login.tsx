@@ -1,21 +1,21 @@
 import React, { FC, useState } from 'react';
-import { useRegisterUserMutation } from 'src/generated/graphql';
 import { RouteComponentProps } from 'react-router-dom';
+import { useLoginUserMutation } from 'src/generated/graphql';
 
-const Register: FC<RouteComponentProps> = ({ history }) => {
-const [email, setEmail] = useState('');
+const Login: FC<RouteComponentProps> = ({ history }) => {
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [register] = useRegisterUserMutation();
+  const [login] = useLoginUserMutation();
 
   return (
     <form
       onSubmit={async (e) => {
         e.preventDefault();
         console.log('form submitted');
-        const response = await register({
+        const response = await login({
           variables: {
-            email: email,
-            password: password,
+            email,
+            password,
           },
         });
         console.log(response);
@@ -34,9 +34,9 @@ const [email, setEmail] = useState('');
           onChange={(e) => setPassword(e.target.value)}
         />
       </div>
-      <button type='submit'>register</button>
+      <button type='submit'>login</button>
     </form>
   );
 };
 
-export default Register;
+export default Login;
